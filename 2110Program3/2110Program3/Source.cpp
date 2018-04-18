@@ -1,7 +1,6 @@
 #include<iostream>
 #include<fstream>
 #include<vector>
-#include<conio.h>
 #include<cmath>
 
 //tree
@@ -26,9 +25,12 @@ struct Tree {
 	int    depth;
 
 	void  addNode(Node*& newNode);
+	void  addNode(Node*&, Node*&);
 	void  search();
+	void  search(Node*&, int&);
 	void  printDepth();
 	void  printTree();
+	int   getDepth();
 };
 
 
@@ -50,16 +52,21 @@ int main()
 	while (in.good()) {
 		in >> tmp;
 		newNode = new Node(tmp);
-		tree->addNode(newNode);
+		tree->addNode(newNode, tree->headNode);
 	}
 	in.close();
 
-	tree->printDepth();
+	//tree->printDepth();
+
+	int searchValue;
 
 	do {
-		tree->search();
+		std::cout << "\nEnter search value: ";
+		std::cin >> searchValue;
+		std::cout << "\n";
+		tree->search(tree->headNode, searchValue);
 		std::cout << "\n\nAnother Search? (Y/N): ";
-		response = _getch();
+		std::cin >> response;
 
 	} while (response == 'y' || response == 'Y');
 
@@ -68,104 +75,47 @@ int main()
 	return 0;
 }
 
-void Tree::printDepth() {
-	std::cout << "\nTree depth: " << depth << std::endl;
-}
-
 // takes in tree's head node and the search value
-void Tree::search()
-{
-	int searchValue;
-	Node* currentNode = headNode;
-	std::cout << "\nEnter search value: ";
-	std::cin >> searchValue;
+void Tree::search(Node* &root, int& val) {
 
-	while (searchValue != currentNode->value)
-	{
-		if (searchValue < currentNode->value && currentNode->left != nullptr) {
-			if (currentNode->left->value == searchValue) {
-				std::cout << currentNode->value << " -> " << searchValue;
-				return;
-			}
-			else {
-				std::cout << currentNode->value << " -> ";
-				currentNode = currentNode->left;
-			}
-		}
+	if (root == nullptr)
+		std::cout << "NULL\n\nCould not find " << val;
+	else if (root != nullptr && root->value != val)
+		std::cout << root->value << " -> ";
+	if (val == root->value)
+		std::cout << root->value << "\nFOUND!";
+	else if (val < root->value)
+		search(root->left, val);
+	else if (val > root->value)
+		search(root->right, val);
+}
 
-		else if (searchValue > currentNode->value && currentNode->right != nullptr) {
-			if (currentNode->right->value == searchValue) {
-				std::cout << currentNode->value << " -> " << searchValue;
-				return;
-			}
-			else {
-				std::cout << currentNode->value << " -> ";
-				currentNode = currentNode->right;
-			}
-		}
-		else {
-			std::cout << currentNode->value;
-			std::cout << "\nNo " << searchValue << " was found...";
-			return;
-		}
+void Tree::addNode(Node* &newNode, Node* &currentNode) {
+
+	if (currentNode == nullptr)
+		currentNode = newNode;
+	else if (newNode->value < currentNode->value)
+		addNode(newNode, currentNode->left);
+	else if (newNode->value > currentNode->value)
+		addNode(newNode, currentNode->right);
+	else if (newNode->value == currentNode->value) {
+		std::cout << "\n...deleting duplicate: " << newNode->value;
+		delete newNode;
 	}
 }
 
-void Tree::addNode(Node*& newNode) {
-
-	Node* currentNode = headNode;
-
-	while (1)
-	{
-		// if the new value is a duplicate, delete the Node
-		if (newNode->value == currentNode->value) {
-			delete newNode; break;
-		}
-		// if new value is less than the currentNode, move down to the left
-		if (newNode->value < currentNode->value) {
-			// next Node is empty, fill spot and break, otherwise, step down
-			if (currentNode->left == nullptr) {
-				currentNode->left = newNode;
-				newNode->depth++;
-				if (depth < newNode->depth)
-					depth = newNode->depth;
-				break;
-			}
-			else {
-				currentNode = currentNode->left;
-				newNode->depth++;
-				if (depth < newNode->depth)
-					depth = newNode->depth;
-			}
-		}
-
-		// if new value is greater than currentNode, move down to the right
-		if (newNode->value > currentNode->value) {
-			// next Node is empty, fill spot and break, otherwise, step down
-			if (currentNode->right == nullptr) {
-				currentNode->right = newNode;
-				newNode->depth++;
-				if (depth < newNode->depth)
-					depth = newNode->depth;
-				break;
-			}
-			else {
-				currentNode = currentNode->right;
-				newNode->depth++;
-				if (depth < newNode->depth)
-					depth = newNode->depth;
-			}
-		}
-	}
+int Tree::getDepth() {
+	int depth;
+	return depth;
 }
 
-void Tree::printTree() {
-	int currLevel = 1;
-	int level = depth - currLevel;
-	int edges = level > 0 ? pow(2, level) : 1;
-	int leadSpace = pow(2, level) - 1;
-	int btwSpace = pow(2, level + 1) - 1;
-}
+/*void Tree::printTree() {
+int currLevel = 1;
+int level = depth - currLevel;
+int edges = level > 0 ? pow(2, level) : 1;
+int leadSpace = pow(2, level) - 1;
+int btwSpace = pow(2, level + 1) - 1;
+}*/
 
 Node::Node() {
 	depth = 0;
@@ -191,3 +141,4 @@ Tree::Tree() {
 	depth = 1;
 	headNode = nullptr;
 }
+
