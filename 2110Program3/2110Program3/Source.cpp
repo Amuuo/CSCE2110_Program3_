@@ -7,9 +7,9 @@
 
 struct Node {
 
-	Node();
-	Node(int v);
-	Node(int v, int d);
+	Node  (            );
+	Node  (int v       );
+	Node  (int v, int d);
 
 	int    value;
 	int    depth;
@@ -24,13 +24,13 @@ struct Tree {
 	Node*  headNode;
 	int    depth;
 
-	void  addNode(Node*& newNode);
-	void  addNode(Node*&, Node*&);
-	void  search();
-	void  search(Node*&, int&);
-	void  printDepth();
-	void  printTree();
-	int   getDepth();
+	void  addNode     (Node*& newNode);
+	void  addNode     (Node*&, Node*&);
+	void  search      (              );
+	void  search      (Node*&, int&  );
+	void  printDepth  (              );
+	void  printTree   (              );
+	int   getDepth    (              );
 };
 
 

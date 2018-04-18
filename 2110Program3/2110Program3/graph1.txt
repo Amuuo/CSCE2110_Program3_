@@ -1,0 +1,11 @@
+A
+B
+C
+D
+
+A B 3
+A C 10
+A D 12
+B C 1
+B D 14
+C D 4
