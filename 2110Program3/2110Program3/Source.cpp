@@ -32,13 +32,15 @@ struct Tree {
 	Node*                       headNode;
 	int                         depth;
 
-	void  addNode     (Node*&, Node*&);
-	void  search      (Node*&, int&  );
-	void  getLines    (Node*&        );
-	int   getDepth    (              );
-	void  print       (              );
-	void initVecs     (              );
-	void importData   (              );
+	void  addNode      (Node*&, Node*&);
+	void  search       (Node*&, int   );
+	void  getLines     (Node*&        );
+	int   getDepth     (              );
+	void  print        (              );
+	void  initVecs     (              );
+	void  importData   (              );
+	void  searchPrompt (              );
+	void  printMenu    (              );
 };
 
 // =========================================================================
@@ -61,30 +63,35 @@ struct Graph {
 	void importData();
 	void printGraph();
 };
-// =========================================================================
-// =========================================================================
-int main()
-{
-	
-	
-	char response;
 
-	Tree* tree = new Tree;
+int menu();
+
+// =========================================================================
+//                  >>>>>>>>>>  M  A  I  N   <<<<<<<<<<<
+// =========================================================================
+int main() {
+	
+	int menuChoice = menu();
+
+	switch (menuChoice) {
+
+		case 1:
+			Graph* graph = new Graph;
+			break;
+
+		case 2:
+			Tree*  tree  = new Tree;
+			break;
+
+		default:
+			break;
+
+	}
+
+
 	tree->importData();
 
-	int searchValue;
 
-	do {
-		std::cout << "\nEnter search value: ";
-		std::cin  >> searchValue;
-		std::cout << "\n";
-
-		tree->search(tree->headNode, searchValue);
-
-		std::cout << "\n\nAnother Search? (Y/N): ";
-		std::cin  >> response;
-
-	} while (response == 'y' || response == 'Y');
 
 	tree->print();
 
@@ -97,7 +104,7 @@ int main()
 // =========================================================================
 
 // takes in tree's head node and the search value
-void Tree::search(Node* &root, int& val) {
+void Tree::search(Node* &root, int val) {
 
 	if (root == nullptr) {
 		std::cout << "NULL\n\nCould not find " << val;
@@ -287,3 +294,56 @@ void Tree::importData()
 	return;
 }
 
+void Tree::searchPrompt()
+{
+	int searchValue;
+	char response;
+	do {
+		std::cout << "\nEnter search value: ";
+		std::cin >> searchValue;
+		std::cout << "\n";
+
+		search(headNode, searchValue);
+
+		std::cout << "\n\nAnother Search? (Y/N): ";
+		std::cin >> response;
+
+	} while (response == 'y' || response == 'Y');
+}
+
+void Tree::printMenu()
+{
+	int choice;
+	int sChoice;
+
+	//loop menu until choice is 4
+	while (1) {
+
+		std::cout << "\n\t1. Import file for tree";
+		std::cout << "\n\t2. Search Tree";
+		std::cout << "\n\t3. Print Tree";
+		std::cout << "\n\t4. Main Menu";
+
+		std::cout << "\n\nSelection: "; std::cin >> choice;
+
+		switch (choice) {
+
+			case 1:	importData();   break;
+			case 2: searchPrompt(); break;
+			case 3: print();        break;
+			case 4: return;         break;
+			default:                break;
+		}
+	}
+}
+
+int menu()
+{
+	int selection;
+	std::cout << "n\Import (Enter #):";
+	std::cout << "\n\t1. Graph";
+	std::cout << "\n\t2. Tree";
+	std::cout << "\n\nSelection: "; std::cin >> selection;
+
+	return selection;
+}
