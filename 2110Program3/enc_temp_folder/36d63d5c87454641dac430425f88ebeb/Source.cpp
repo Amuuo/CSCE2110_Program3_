@@ -289,10 +289,6 @@ void Graph::searchPrompt()
 		std::cout << "\n\nGRAPH SEARCH";
 		std::cout << "\n\nSearch From: "; std::cin >> start;
 		std::cout << "Search To: "; std::cin >> end;
-		
-		// make sure inputs are capatilized
-		for (auto& t : start) toupper(t);
-		for (auto& t : end) toupper(t);
 
 		search(start, end);
 		std::cout << "\n\nAnother Search (Y/N): ";
